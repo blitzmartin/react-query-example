@@ -13,7 +13,7 @@ export const PageContainer = ({
   return (
     <div
       className={cn(
-        'flex gap-4 h-full w-full flex-col px-20 py-8  items-center min-h-screen',
+        'flex gap-4 h-full w-full flex-col px-20 py-8 bg-sky-950 items-center min-h-screen',
         className
       )}
     >
@@ -24,5 +24,5 @@ export const PageContainer = ({
 }
 
 export const PageTitle = ({ title }: { title: ReactNode }) => {
-  return <h1 className="text-3xl font-extrabold font-serif pb-10">{title}</h1>
+  return <h1 className="text-3xl font-extrabold font-serif text-cyan-50 pb-10">{title}</h1>
 }
