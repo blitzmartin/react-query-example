@@ -1,5 +1,5 @@
 import { PageContainer } from '@/shared/PageContainer'
-import { useData } from '../home.queries'
+import { useData } from './home.queries'
 import { QueryStateManager } from '@/shared'
 
 export const Home = () => {

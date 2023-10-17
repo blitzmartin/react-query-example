@@ -3,7 +3,7 @@ import axios from "axios"
 
 const getData = async (
 ): Promise<DataResponse> => {
-    const response = await axios.get('/add/endpoint')
+    const response = await axios.get('https://jsonplaceholder.typicode.com/comments')
     return response.data // response or response.data?
 }
 
