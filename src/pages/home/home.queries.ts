@@ -1,21 +1,25 @@
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
-const getData = async (
-): Promise<DataResponse> => {
+const getComments = async (
+): Promise<Comment[]> => {
     const response = await axios.get('https://jsonplaceholder.typicode.com/comments')
-    return response.data // response or response.data?
+    console.log(response.data)
+    return response.data
 }
 
-export const useData = () =>
+export const useComments = () =>
     useQuery({
-        queryKey: ['dataKey'],
-        queryFn: () => getData(),
+        queryKey: ['comments'],
+        queryFn: () => getComments(),
     })
 
-export type DataResponse = {
-    id: string
-    other: string
+export type Comment = {
+    id: number
+    postId: number
+    name: string
+    email: string
+    body: string
 }
 
 
