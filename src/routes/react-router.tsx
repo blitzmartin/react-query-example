@@ -1,4 +1,3 @@
-import { Contacts } from '@/pages/contacts'
 import { Home } from '@/pages/home'
 import { NotFound } from '@/shared'
 import { createBrowserRouter } from 'react-router-dom'
@@ -12,10 +11,6 @@ export const router = createBrowserRouter([
       {
         path: '/',
         element: <Home />
-      },
-      {
-        path: '/contacts',
-        element: <Contacts />
       }
     ]
   },

@@ -4,11 +4,6 @@ export const navbarLinks = [
     label: 'Home',
     route: './'
   },
-  {
-    id: 2,
-    label: 'Contacts',
-    route: './contacts'
-  }
 ]
 
 export type NavbarLink = {
