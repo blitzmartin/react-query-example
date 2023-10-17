@@ -4,7 +4,6 @@ import axios from "axios"
 const getComments = async (
 ): Promise<Comment[]> => {
     const response = await axios.get('https://jsonplaceholder.typicode.com/comments')
-    console.log(response.data)
     return response.data
 }
 
