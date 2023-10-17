@@ -4,7 +4,7 @@ import axios from "axios"
 const getComments = async (
 ): Promise<Comment[]> => {
     const response = await axios.get('https://jsonplaceholder.typicode.com/comments')
-    return response.data
+    return response.data.splice(0, 20)
 }
 
 export const useComments = () =>

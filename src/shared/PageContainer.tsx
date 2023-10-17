@@ -24,5 +24,5 @@ export const PageContainer = ({
 }
 
 export const PageTitle = ({ title }: { title: ReactNode }) => {
-  return <h1 className="text-2xl font-extrabold">{title}</h1>
+  return <h1 className="text-3xl font-extrabold font-serif pb-10">{title}</h1>
 }
