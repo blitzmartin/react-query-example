@@ -29,8 +29,8 @@ export const Home = () => {
 
   return (
     <PageContainer>
-      <div className='flex'>
-        <Button onClick={() => onPostCreateSubmit()} variant="ghost">New Post</Button>
+      <div className='flex w-full justify-end items-center py-4'>
+        <Button onClick={() => onPostCreateSubmit()} className='rounded-md text-accent px-2 py-1'>New Post</Button>
       </div>
       <h1 className="text-3xl text-center font-extrabold font-serif text-cyan-50 pb-10">Posts</h1>
       <QueryStateManager
