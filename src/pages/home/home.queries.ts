@@ -1,59 +1,49 @@
-import { useQuery } from "@tanstack/react-query"
+import { queryClient } from "@/config/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
-const getComments = async (
-): Promise<Comment[]> => {
-    const response = await axios.get('https://jsonplaceholder.typicode.com/comments')
-    return response.data.splice(0, 20)
+const getPosts = async (
+): Promise<PostResponse[]> => {
+    const response = await axios.get('https://jsonplaceholder.typicode.com/posts')
+    return response.data
+  //  return response.data.splice(0, 20)
 }
 
-export const useComments = () =>
+export const usePost = () =>
     useQuery({
-        queryKey: ['comments'],
-        queryFn: () => getComments(),
+        queryKey: ['posts'],
+        queryFn: () => getPosts(),
     })
 
-export type Comment = {
-    id: number
-    postId: number
-    name: string
-    email: string
-    body: string
-}
 
 
-/*
-const antivirusActivate = async (body: AntivirusActivateRequest) => {
-    const response = await axiosInstance.post('/api/v1/antivirus/activate', body)
+const postCreate = async (body: PostCreateRequest ) => {
+    const response = await axios.post('https://jsonplaceholder.typicode.com/posts', body)
     return response.data
 }
 
-export const useAntivirusActivateMutation = () => {
+export const usePostCreateMutation = () => {
     return useMutation({
-        mutationFn: antivirusActivate,
+        mutationFn: postCreate,
         onSuccess: () => {
-            queryClient.invalidateQueries(['antivirusStatus'])
+            queryClient.invalidateQueries(['posts'])
         },
     })
 }
 
-  const antivirusActivateMutation = useAntivirusActivateMutation()
 
-  const onToggleAntivirusSubmit = async (values: AntivirusActivationValues) => {
-    antivirusActivateMutation.mutate(
-      {
-        tenantId: tenant.id,
-        apiKey: values.avApiKey,
-      },
-      {
-        onSuccess: () => {
-          toast({
-            description: t('antivirus-activated'),
-            variant: 'success',
-          })
-        },
-      }
-    )
-  }
 
-*/
+export type PostResponse = {
+  id: number
+  userId: number
+  title: string
+  body: string
+}
+
+
+export type PostCreateRequest = {
+  id: number
+  userId: number
+  title: string
+  body: string
+}
