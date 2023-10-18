@@ -1,8 +1,7 @@
-import { PageContainer } from '@/shared/PageContainer'
-import { usePost, usePostCreateMutation } from './home.queries'
-import { QueryStateManager } from '@/shared'
+import { QueryStateManager, PageContainer, Button } from '@/shared'
 import { toast } from '@/hooks/useToast'
 import { randomId } from '@/lib/utils'
+import { usePost, usePostCreateMutation } from './home.queries'
 
 export const Home = () => {
   const postQuery = usePost()
@@ -10,7 +9,7 @@ export const Home = () => {
   
   const postCreateMutation = usePostCreateMutation()
 
-  const onPostCreateSubmit = async (values: any) => {
+  const onPostCreateSubmit = async () => {
     postCreateMutation.mutate(
       {
         userId: randomId(),
@@ -29,7 +28,11 @@ export const Home = () => {
   }
 
   return (
-    <PageContainer title="Posts">
+    <PageContainer>
+      <div className='flex'>
+        <Button onClick={() => onPostCreateSubmit()} variant="ghost">New Post</Button>
+      </div>
+      <h1 className="text-3xl text-center font-extrabold font-serif text-cyan-50 pb-10">Posts</h1>
       <QueryStateManager
         query={postQuery}
         renderOnError={<div className='text-cyan-50 py-20'>Error</div>}

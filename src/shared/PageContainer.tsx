@@ -3,12 +3,10 @@ import { ReactNode } from 'react'
 
 export const PageContainer = ({
   children,
-  className,
-  title
+  className
 }: {
   children: ReactNode
   className?: string
-  title?: ReactNode
 }) => {
   return (
     <div
@@ -17,12 +15,7 @@ export const PageContainer = ({
         className
       )}
     >
-      {title && <PageTitle title={title} />}
       <div className="flex-initial"> {children}</div>
     </div>
   )
-}
-
-export const PageTitle = ({ title }: { title: ReactNode }) => {
-  return <h1 className="text-3xl font-extrabold font-serif text-cyan-50 pb-10">{title}</h1>
 }
