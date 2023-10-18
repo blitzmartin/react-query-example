@@ -1,9 +1,12 @@
-import { QueryStateManager, PageContainer, Button } from '@/shared'
+import { QueryStateManager, PageContainer, Button, Dialog, DialogTrigger, Input, Label, DialogDescription, DialogTitle, DialogHeader, Textarea, DialogFooter } from '@/shared'
 import { toast } from '@/hooks/useToast'
 import { randomId } from '@/lib/utils'
 import { usePost, usePostCreateMutation } from './home.queries'
+import { DialogContent } from '@radix-ui/react-dialog'
+import { useState } from 'react'
 
 export const Home = () => {
+  const [isCreateOpen, setIsCreateOpen] = useState(false)
   const postQuery = usePost()
 
   const postCreateMutation = usePostCreateMutation()
@@ -32,12 +35,33 @@ export const Home = () => {
       }
     );
   };
-  
-  
+
+
   return (
     <PageContainer>
       <div className='flex w-full justify-end items-center py-4'>
-        <Button onClick={() => onPostCreateSubmit()} className='rounded-md text-accent px-2 py-1'>New Post</Button>
+        <Dialog open={isCreateOpen}>
+          <DialogTrigger><Button variant="outline" onClick={() => setIsCreateOpen(true)}>New Post</Button></DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Create new post</DialogTitle>
+              <DialogDescription>
+                A small description, probably unnecesary
+              </DialogDescription>
+            </DialogHeader>
+            <div>
+              <Label>Title</Label>
+              <Input />
+            </div>
+            <div>
+              <Label>Title</Label>
+              <Textarea />
+            </div>
+            <DialogFooter>
+              <Button type="submit">Save changes</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
       <h1 className="text-3xl text-center font-extrabold font-serif text-cyan-50 pb-10">Posts</h1>
       <QueryStateManager
