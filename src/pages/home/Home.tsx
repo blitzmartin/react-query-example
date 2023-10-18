@@ -18,7 +18,7 @@ export const Home = () => {
       },
       {
         onSuccess: () => {
-          toast({
+          toast({ // returning 201, toast is not shown
             description: 'Post created',
             variant: 'success',
           })
