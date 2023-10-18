@@ -2,6 +2,7 @@ import { PageContainer } from '@/shared/PageContainer'
 import { usePost, usePostCreateMutation } from './home.queries'
 import { QueryStateManager } from '@/shared'
 import { toast } from '@/hooks/useToast'
+import { randomId } from '@/lib/utils'
 
 export const Home = () => {
   const postQuery = usePost()
@@ -12,8 +13,9 @@ export const Home = () => {
   const onPostCreateSubmit = async (values: any) => {
     postCreateMutation.mutate(
       {
-        tenantId: tenant.id,
-        apiKey: values.avApiKey,
+        userId: randomId(),
+        title: 'New title',
+        body: 'Lorem ipsum bla bla bla'
       },
       {
         onSuccess: () => {
