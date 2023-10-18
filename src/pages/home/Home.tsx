@@ -1,9 +1,10 @@
-import { QueryStateManager, PageContainer, Button, Dialog, DialogTrigger, Input, Label, DialogDescription, DialogTitle, DialogHeader, Textarea, DialogFooter } from '@/shared'
+
 import { toast } from '@/hooks/useToast'
 import { randomId } from '@/lib/utils'
 import { usePost, usePostCreateMutation } from './home.queries'
-import { DialogContent } from '@radix-ui/react-dialog'
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@radix-ui/react-dialog'
 import { useState } from 'react'
+import { Button, DialogFooter, DialogHeader, Input, Label, PageContainer, QueryStateManager, Textarea } from '@/shared'
 
 export const Home = () => {
   const [isCreateOpen, setIsCreateOpen] = useState(false)
@@ -40,7 +41,7 @@ export const Home = () => {
   return (
     <PageContainer>
       <div className='flex w-full justify-end items-center py-4'>
-        <Dialog open={isCreateOpen}>
+        <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
           <DialogTrigger><Button variant="outline" onClick={() => setIsCreateOpen(true)}>New Post</Button></DialogTrigger>
           <DialogContent>
             <DialogHeader>
