@@ -5,8 +5,7 @@ import { usePost, usePostCreateMutation } from './home.queries'
 
 export const Home = () => {
   const postQuery = usePost()
-  
-  
+
   const postCreateMutation = usePostCreateMutation()
 
   const onPostCreateSubmit = async () => {
@@ -14,19 +13,27 @@ export const Home = () => {
       {
         userId: randomId(),
         title: 'New title',
-        body: 'Lorem ipsum bla bla bla'
+        body: 'Lorem ipsum bla bla bla',
       },
       {
-        onSuccess: () => {
-          toast({ // returning 201, toast is not shown
-            description: 'Post created',
-            variant: 'success',
-          })
+        onSettled: (data, error) => {
+          if (error) {
+            toast({
+              description: 'Error creating post',
+              variant: 'error',
+            });
+          } else {
+            toast({
+              description: 'Post created',
+              variant: 'success',
+            });
+          }
         },
       }
-    )
-  }
-
+    );
+  };
+  
+  
   return (
     <PageContainer>
       <div className='flex w-full justify-end items-center py-4'>
