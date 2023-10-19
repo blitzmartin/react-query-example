@@ -45,6 +45,10 @@ export const Home = () => {
     resolver: zodResolver(createPostValidationSchema)
   })
   const postCreateMutation = usePostCreateMutation()
+  const handleClose = () => {
+    setIsCreateOpen(false)
+    createPostForm.reset()
+  }
 
   const onPostCreateSubmit = async (values: CreatePostFormValues) => {
     postCreateMutation.mutate(
@@ -59,6 +63,7 @@ export const Home = () => {
               description: 'Error creating post',
               variant: 'error'
             })
+            createPostForm.reset()
           } else {
             toast({
               description: 'Post created',
@@ -68,28 +73,32 @@ export const Home = () => {
         }
       }
     )
-    setIsCreateOpen(false)
   }
 
   return (
     <PageContainer>
       <div className="flex w-full items-center justify-end py-4">
-        <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+        <Dialog
+          open={isCreateOpen}
+          onOpenChange={setIsCreateOpen}
+          onClose={() => createPostForm.reset()}
+        >
           <DialogTrigger asChild>
             <Button onClick={() => setIsCreateOpen(true)}>New Post</Button>
           </DialogTrigger>
           <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create new post</DialogTitle>
-              <DialogDescription>
-                A small description, probably unnecesary
-              </DialogDescription>
-            </DialogHeader>
             <Form {...createPostForm}>
               <form
                 onSubmit={createPostForm.handleSubmit(onPostCreateSubmit)}
                 className="flex flex-col gap-4"
               >
+                <DialogHeader>
+                  <DialogTitle>Create new post</DialogTitle>
+                  <DialogDescription>
+                    A small description, probably unnecesary
+                  </DialogDescription>
+                </DialogHeader>
+
                 <FormField
                   control={createPostForm.control}
                   name="title"
@@ -120,11 +129,11 @@ export const Home = () => {
                     </FormItem>
                   )}
                 />
+                <DialogFooter>
+                  <Button type="submit">Save</Button>
+                </DialogFooter>
               </form>
             </Form>
-            <DialogFooter>
-              <Button type="submit">Save</Button>
-            </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
