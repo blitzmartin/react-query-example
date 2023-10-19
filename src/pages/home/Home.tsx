@@ -9,32 +9,48 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
   Input,
-  Label,
   PageContainer,
   QueryStateManager,
   Textarea
 } from '@/shared'
-
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 import { usePost, usePostCreateMutation } from './home.queries'
+
+const createPostValidationSchema = z.object({
+  title: z.string({ required_error: 'Title is required' }).min(2, {
+    message: 'Title is not valid'
+  }),
+  body: z.string({ required_error: 'Text is required' }).min(2, {
+    message: 'Text is not valid'
+  })
+})
+
+type CreatePostFormValues = z.infer<typeof createPostValidationSchema>
 
 export const Home = () => {
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const postQuery = usePost()
 
+  const createPostForm = useForm<CreatePostFormValues>({
+    resolver: zodResolver(createPostValidationSchema)
+  })
   const postCreateMutation = usePostCreateMutation()
-  const handleSubmit = () => {
-    onPostCreateSubmit()
-    setIsCreateOpen(false)
-  }
 
-  const onPostCreateSubmit = async () => {
+  const onPostCreateSubmit = async (values: CreatePostFormValues) => {
     postCreateMutation.mutate(
       {
-        userId: randomId(),
-        title: 'New title',
-        body: 'Lorem ipsum bla bla bla'
+        ...values,
+        userId: randomId()
       },
       {
         onSettled: (data, error) => {
@@ -52,6 +68,7 @@ export const Home = () => {
         }
       }
     )
+    setIsCreateOpen(false)
   }
 
   return (
@@ -59,11 +76,8 @@ export const Home = () => {
       <div className="flex w-full items-center justify-end py-4">
         <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
           <DialogTrigger asChild>
-            <Button variant="outline" onClick={() => setIsCreateOpen(true)}>
-              New Post
-            </Button>
+            <Button onClick={() => setIsCreateOpen(true)}>New Post</Button>
           </DialogTrigger>
-
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Create new post</DialogTitle>
@@ -71,18 +85,45 @@ export const Home = () => {
                 A small description, probably unnecesary
               </DialogDescription>
             </DialogHeader>
-            <div className="flex flex-col gap-2">
-              <Label>Title</Label>
-              <Input />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label>Text</Label>
-              <Textarea />
-            </div>
+            <Form {...createPostForm}>
+              <form
+                onSubmit={createPostForm.handleSubmit(onPostCreateSubmit)}
+                className="flex flex-col gap-4"
+              >
+                <FormField
+                  control={createPostForm.control}
+                  name="title"
+                  render={({ field, fieldState }) => (
+                    <FormItem className="flex flex-col gap-2">
+                      <FormLabel>Title</FormLabel>
+                      <FormControl>
+                        <Input
+                          id="post-title"
+                          {...field}
+                          hasErrors={!!fieldState.error}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={createPostForm.control}
+                  name="body"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col gap-2">
+                      <FormLabel>Text</FormLabel>
+                      <FormControl>
+                        <Textarea id="post-content" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </form>
+            </Form>
             <DialogFooter>
-              <Button type="submit" onClick={handleSubmit}>
-                Save
-              </Button>
+              <Button type="submit">Save</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -102,7 +143,7 @@ export const Home = () => {
                 className="flex flex-col justify-between gap-4 rounded-lg border-2 border-foreground bg-cyan-50 px-6 py-4 font-body"
               >
                 <div className="flex justify-between">
-                  <div className="tex-lg font-sans font-semibold">
+                  <div className="font-sans font-semibold">
                     {comment.title.toUpperCase()}
                   </div>
                 </div>
