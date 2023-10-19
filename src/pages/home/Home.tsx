@@ -24,6 +24,10 @@ export const Home = () => {
   const postQuery = usePost()
 
   const postCreateMutation = usePostCreateMutation()
+  const handleSubmit = () => {
+    onPostCreateSubmit()
+    setIsCreateOpen(false)
+  }
 
   const onPostCreateSubmit = async () => {
     postCreateMutation.mutate(
@@ -59,6 +63,7 @@ export const Home = () => {
               New Post
             </Button>
           </DialogTrigger>
+
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Create new post</DialogTitle>
@@ -66,16 +71,18 @@ export const Home = () => {
                 A small description, probably unnecesary
               </DialogDescription>
             </DialogHeader>
-            <div>
+            <div className="flex flex-col gap-2">
               <Label>Title</Label>
               <Input />
             </div>
-            <div>
-              <Label>Title</Label>
+            <div className="flex flex-col gap-2">
+              <Label>Text</Label>
               <Textarea />
             </div>
             <DialogFooter>
-              <Button type="submit">Save changes</Button>
+              <Button type="submit" onClick={handleSubmit}>
+                Save
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
