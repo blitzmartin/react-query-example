@@ -27,11 +27,11 @@ import { z } from 'zod'
 import { usePost, usePostCreateMutation } from './home.queries'
 
 const createPostValidationSchema = z.object({
-  title: z.string({ required_error: 'Title is required' }).min(2, {
-    message: 'Title is not valid'
+  title: z.string({ required_error: 'Post title is required' }).min(2, {
+    message: 'Post title is not valid'
   }),
-  body: z.string({ required_error: 'Text is required' }).min(2, {
-    message: 'Text is not valid'
+  body: z.string({ required_error: 'Post body is required' }).min(2, {
+    message: 'Post body is not valid'
   })
 })
 
