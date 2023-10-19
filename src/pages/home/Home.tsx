@@ -63,12 +63,12 @@ export const Home = () => {
               description: 'Error creating post',
               variant: 'error'
             })
-            createPostForm.reset()
           } else {
             toast({
               description: 'Post created',
               variant: 'success'
             })
+            handleClose()
           }
         }
       }
@@ -119,11 +119,15 @@ export const Home = () => {
                 <FormField
                   control={createPostForm.control}
                   name="body"
-                  render={({ field }) => (
+                  render={({ field, fieldState }) => (
                     <FormItem className="flex flex-col gap-2">
                       <FormLabel>Text</FormLabel>
                       <FormControl>
-                        <Textarea id="post-content" {...field} />
+                        <Textarea
+                          id="post-content"
+                          {...field}
+                          hasErrors={!!fieldState.error}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
