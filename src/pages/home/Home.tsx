@@ -219,12 +219,9 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
     )
   }
   return (
-    <div
-      key={post.id}
-      className="flex flex-col justify-between gap-4 rounded-lg border-2 border-foreground px-6 py-4"
-    >
+    <div key={post.id} className="flex flex-col justify-between gap-1">
       <div className="flex justify-between">
-        <div className="">{post.title.toUpperCase()}</div>
+        <div className="font-display text-xl">{post.title}</div>
         <Dialog
           open={isEditOpen}
           onOpenChange={setIsEditOpen}
@@ -289,7 +286,7 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="text-slate-700">{post.body}</div>
+      <div className="text-sm text-card">{post.body}</div>
     </div>
   )
 }
