@@ -1,6 +1,6 @@
 import { SVGProps } from 'react'
 
-export function PhXBold(props: SVGProps<SVGSVGElement>) {
+export function PhPlus(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -11,9 +11,9 @@ export function PhXBold(props: SVGProps<SVGSVGElement>) {
     >
       <path
         fill="currentColor"
-        d="M208.49 191.51a12 12 0 0 1-17 17L128 145l-63.51 63.49a12 12 0 0 1-17-17L111 128L47.51 64.49a12 12 0 0 1 17-17L128 111l63.51-63.52a12 12 0 0 1 17 17L145 128Z"
+        d="M224 128a8 8 0 0 1-8 8h-80v80a8 8 0 0 1-16 0v-80H40a8 8 0 0 1 0-16h80V40a8 8 0 0 1 16 0v80h80a8 8 0 0 1 8 8Z"
       ></path>
     </svg>
   )
 }
-export default PhXBold
+export default PhPlus
