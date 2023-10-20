@@ -2,6 +2,15 @@ import { PhPencilSimpleLine, PhPlus, PhTrash } from '@/assets/icons'
 import { toast } from '@/hooks/useToast'
 import { randomId } from '@/lib/utils'
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
   Button,
   Dialog,
   DialogContent,
@@ -28,6 +37,7 @@ import { z } from 'zod'
 import {
   usePost,
   usePostCreateMutation,
+  usePostDeleteMutation,
   usePostEditMutation
 } from './home.queries'
 import { PostResponse } from './home.types'
@@ -182,10 +192,14 @@ type EditPostFormValues = z.infer<typeof editPostValidationSchema>
 
 export const PostCard = ({ post }: { post: PostResponse }) => {
   const [isEditOpen, setIsEditOpen] = useState(false)
+  const postEditMutation = usePostEditMutation()
+  const postDeleteMutation = usePostDeleteMutation()
+
   const handleClose = () => {
     setIsEditOpen(false)
     editPostForm.reset()
   }
+
   const editPostForm = useForm<EditPostFormValues>({
     defaultValues: {
       title: post.title,
@@ -193,12 +207,13 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
     },
     resolver: zodResolver(editPostValidationSchema)
   })
-  const postEditMutation = usePostEditMutation()
+
   const onPostEditSubmit = async (values: CreatePostFormValues) => {
     postEditMutation.mutate(
       {
         ...values,
-        userId: randomId()
+        userId: post.userId,
+        id: post.id
       },
       {
         onSettled: (data, error) => {
@@ -218,6 +233,29 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
       }
     )
   }
+
+  const handleDelete = () => {
+    postDeleteMutation.mutate(
+      { id: post.id },
+      {
+        onSettled: (data, error) => {
+          if (error) {
+            toast({
+              description: 'Error deleting post',
+              variant: 'error'
+            })
+          } else {
+            toast({
+              description: 'Post deleted',
+              variant: 'success'
+            })
+            handleClose()
+          }
+        }
+      }
+    )
+  }
+
   return (
     <div key={post.id} className="flex flex-col justify-between gap-1">
       <div className="flex justify-between">
@@ -286,9 +324,28 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
               </Form>
             </DialogContent>
           </Dialog>
-          <Button variant="ghost">
-            <PhTrash width="16px" height="16px" />
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="ghost">
+                <PhTrash width="16px" height="16px" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete post</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure? This action cannot be undone. This will
+                  permanently delete this post from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleDelete}>
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
       <div className="text-sm text-card">{post.body}</div>
