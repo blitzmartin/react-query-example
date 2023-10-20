@@ -1,3 +1,4 @@
-export * from './PhXBold'
-export * from './PhPlus'
 export * from './PhPencilSimpleLine'
+export * from './PhPlus'
+export * from './PhTrash'
+export * from './PhXBold'

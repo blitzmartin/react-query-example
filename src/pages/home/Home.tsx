@@ -1,4 +1,4 @@
-import { PhPencilSimpleLine, PhPlus } from '@/assets/icons'
+import { PhPencilSimpleLine, PhPlus, PhTrash } from '@/assets/icons'
 import { toast } from '@/hooks/useToast'
 import { randomId } from '@/lib/utils'
 import {
@@ -222,69 +222,74 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
     <div key={post.id} className="flex flex-col justify-between gap-1">
       <div className="flex justify-between">
         <div className="font-display text-xl">{post.title}</div>
-        <Dialog
-          open={isEditOpen}
-          onOpenChange={setIsEditOpen}
-          onClose={() => editPostForm.reset()}
-        >
-          <DialogTrigger asChild>
-            <Button variant="ghost" onClick={() => setIsEditOpen(true)}>
-              <PhPencilSimpleLine width="16px" height="16px" />
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <Form {...editPostForm}>
-              <form
-                onSubmit={editPostForm.handleSubmit(onPostEditSubmit)}
-                className="flex flex-col gap-4"
-              >
-                <DialogHeader>
-                  <DialogTitle>Create new post</DialogTitle>
-                  <DialogDescription>
-                    A small description, probably unnecesary
-                  </DialogDescription>
-                </DialogHeader>
-                <FormField
-                  control={editPostForm.control}
-                  name="title"
-                  render={({ field, fieldState }) => (
-                    <FormItem className="flex flex-col gap-2">
-                      <FormLabel>Title</FormLabel>
-                      <FormControl>
-                        <Input
-                          id="post-title"
-                          {...field}
-                          hasErrors={!!fieldState.error}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={editPostForm.control}
-                  name="body"
-                  render={({ field, fieldState }) => (
-                    <FormItem className="flex flex-col gap-2">
-                      <FormLabel>Text</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          id="post-content"
-                          {...field}
-                          hasErrors={!!fieldState.error}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <DialogFooter>
-                  <Button type="submit">Save</Button>
-                </DialogFooter>
-              </form>
-            </Form>
-          </DialogContent>
-        </Dialog>
+        <div className="flex items-center justify-between">
+          <Dialog
+            open={isEditOpen}
+            onOpenChange={setIsEditOpen}
+            onClose={() => editPostForm.reset()}
+          >
+            <DialogTrigger asChild>
+              <Button variant="ghost" onClick={() => setIsEditOpen(true)}>
+                <PhPencilSimpleLine width="16px" height="16px" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <Form {...editPostForm}>
+                <form
+                  onSubmit={editPostForm.handleSubmit(onPostEditSubmit)}
+                  className="flex flex-col gap-4"
+                >
+                  <DialogHeader>
+                    <DialogTitle>Create new post</DialogTitle>
+                    <DialogDescription>
+                      A small description, probably unnecesary
+                    </DialogDescription>
+                  </DialogHeader>
+                  <FormField
+                    control={editPostForm.control}
+                    name="title"
+                    render={({ field, fieldState }) => (
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel>Title</FormLabel>
+                        <FormControl>
+                          <Input
+                            id="post-title"
+                            {...field}
+                            hasErrors={!!fieldState.error}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={editPostForm.control}
+                    name="body"
+                    render={({ field, fieldState }) => (
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel>Text</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            id="post-content"
+                            {...field}
+                            hasErrors={!!fieldState.error}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <DialogFooter>
+                    <Button type="submit">Save</Button>
+                  </DialogFooter>
+                </form>
+              </Form>
+            </DialogContent>
+          </Dialog>
+          <Button variant="ghost">
+            <PhTrash width="16px" height="16px" />
+          </Button>
+        </div>
       </div>
       <div className="text-sm text-card">{post.body}</div>
     </div>
