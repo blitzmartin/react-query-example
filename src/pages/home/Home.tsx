@@ -25,6 +25,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { usePost, usePostCreateMutation } from './home.queries'
+import { PostResponse } from './home.types'
 
 const createPostValidationSchema = z.object({
   title: z.string({ required_error: 'Post title is required' }).min(2, {
@@ -98,7 +99,6 @@ export const Home = () => {
                     A small description, probably unnecesary
                   </DialogDescription>
                 </DialogHeader>
-
                 <FormField
                   control={createPostForm.control}
                   name="title"
@@ -148,24 +148,29 @@ export const Home = () => {
         query={postQuery}
         renderOnError={<div className="py-20 text-cyan-50">Error</div>}
         renderOnLoading={<div className="py-20 text-cyan-50">Loading...</div>}
-        renderOnSuccess={(commentData) => (
+        renderOnSuccess={(postData) => (
           <div className="flex max-w-[800px] flex-col gap-8">
-            {commentData.map((comment) => (
-              <div
-                key={comment.id}
-                className="flex flex-col justify-between gap-4 rounded-lg border-2 border-foreground bg-cyan-50 px-6 py-4 font-body"
-              >
-                <div className="flex justify-between">
-                  <div className="font-sans font-semibold">
-                    {comment.title.toUpperCase()}
-                  </div>
-                </div>
-                <div className="text-slate-700">{comment.body}</div>
-              </div>
-            ))}
+            {postData.map((post) => (<PostCard key={post.id} post={post}  />))}
           </div>
         )}
       />
     </PageContainer>
+  )
+}
+
+
+export const PostCard = ({post}:{post: PostResponse}) =>{
+  return(
+    <div
+    key={post.id}
+    className="flex flex-col justify-between gap-4 rounded-lg border-2 border-foreground bg-cyan-50 px-6 py-4 font-body"
+  >
+    <div className="flex justify-between">
+      <div className="font-sans font-semibold">
+        {post.title.toUpperCase()}
+      </div>
+    </div>
+    <div className="text-slate-700">{post.body}</div>
+  </div>
   )
 }

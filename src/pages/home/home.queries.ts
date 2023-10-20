@@ -1,6 +1,7 @@
 import { queryClient } from "@/config/react-query"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import axios from "axios"
+import { PostCreateRequest, PostResponse } from "./home.types"
 
 const getPosts = async (
 ): Promise<PostResponse[]> => {
@@ -29,20 +30,4 @@ export const usePostCreateMutation = () => {
             queryClient.invalidateQueries(['posts'])
         },
     })
-}
-
-
-
-export type PostResponse = {
-  id: number
-  userId: number
-  title: string
-  body: string
-}
-
-
-export type PostCreateRequest = {
-  userId: number
-  title: string
-  body: string
 }
