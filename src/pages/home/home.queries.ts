@@ -32,11 +32,26 @@ export const usePostCreateMutation = () => {
   })
 }
 
-const postEdit = async (body: PostEditRequest) => {
-  const response = await axios.put(
+const postEdit = async ({
+  id,
+  userId,
+  title,
+  body
+}: {
+  id: number
+  userId: number
+  title: string
+  body: string
+}) => {
+  const response = await axios.put<PostEditRequest>(
     // `https://jsonplaceholder.typicode.com/posts/${id}`,
-    `https://jsonplaceholder.typicode.com/posts`,
-    body
+    `https://jsonplaceholder.typicode.com/posts/${id}`,
+    {
+      id,
+      userId,
+      title,
+      body
+    }
   )
   return response.data
 }
@@ -52,7 +67,6 @@ export const usePostEditMutation = () => {
 
 const postDelete = async ({ id }: { id: number }) => {
   const response = await axios.delete(
-    // `https://jsonplaceholder.typicode.com/posts/${id}`,
     `https://jsonplaceholder.typicode.com/posts/${id}`
   )
   return response.data

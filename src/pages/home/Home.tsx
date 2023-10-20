@@ -219,12 +219,12 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
         onSettled: (data, error) => {
           if (error) {
             toast({
-              description: 'Error creating post',
+              description: 'Error editing post',
               variant: 'error'
             })
           } else {
             toast({
-              description: 'Post created',
+              description: 'Post edited',
               variant: 'success'
             })
             handleClose()
