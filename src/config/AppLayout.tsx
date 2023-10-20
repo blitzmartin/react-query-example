@@ -24,7 +24,7 @@ export const AppLayout = () => {
 
 const Sidebar = () => {
   return (
-    <div className="flex h-screen min-w-[240px] flex-col items-center justify-start gap-16 bg-primary px-6  py-8">
+    <div className="flex h-screen min-w-[240px] flex-col items-center justify-start gap-16 bg-primary px-6  pb-4 pt-8">
       <Avatar className="h-32 w-32">
         <AvatarImage src="https://images.unsplash.com/photo-1593085512500-5d55148d6f0d?auto=format&fit=crop&q=80&w=1160&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
         <AvatarFallback>MR</AvatarFallback>
