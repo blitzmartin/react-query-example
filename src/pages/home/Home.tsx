@@ -24,7 +24,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { usePost, usePostCreateMutation } from './home.queries'
+import { usePost, usePostCreateMutation, usePostEditMutation } from './home.queries'
 import { PostResponse } from './home.types'
 
 const createPostValidationSchema = z.object({
@@ -158,8 +158,50 @@ export const Home = () => {
   )
 }
 
+const editPostValidationSchema = z.object({
+  title: z.string({ required_error: 'Post title is required' }).min(2, {
+    message: 'Post title is not valid'
+  }),
+  body: z.string({ required_error: 'Post body is required' }).min(2, {
+    message: 'Post body is not valid'
+  })
+})
+
+type EditPostFormValues = z.infer<typeof editPostValidationSchema>
 
 export const PostCard = ({post}:{post: PostResponse}) =>{
+  const editPostForm = useForm<EditPostFormValues>({
+    defaultValues:{
+      title: post.title,
+      body: post.body
+    },
+    resolver: zodResolver(editPostValidationSchema)
+  })
+  const postEditMutation = usePostEditMutation()
+  const onPostEditSubmit = async (values: CreatePostFormValues) => {
+    postEditMutation.mutate(
+      {
+        ...values,
+        userId: randomId()
+      },
+      {
+        onSettled: (data, error) => {
+          if (error) {
+            toast({
+              description: 'Error creating post',
+              variant: 'error'
+            })
+          } else {
+            toast({
+              description: 'Post created',
+              variant: 'success'
+            })
+            handleClose()
+          }
+        }
+      }
+    )
+  }
   return(
     <div
     key={post.id}
@@ -169,6 +211,67 @@ export const PostCard = ({post}:{post: PostResponse}) =>{
       <div className="font-sans font-semibold">
         {post.title.toUpperCase()}
       </div>
+      <Dialog
+          open={isCreateOpen}
+          onOpenChange={setIsCreateOpen}
+          onClose={() => editPostForm.reset()}
+        >
+          <DialogTrigger asChild>
+            <Button onClick={() => setIsCreateOpen(true)}>New Post</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <Form {...editPostForm}>
+              <form
+                onSubmit={editPostForm.handleSubmit(onPostEditSubmit)}
+                className="flex flex-col gap-4"
+              >
+                <DialogHeader>
+                  <DialogTitle>Create new post</DialogTitle>
+                  <DialogDescription>
+                    A small description, probably unnecesary
+                  </DialogDescription>
+                </DialogHeader>
+                <FormField
+                  control={editPostForm.control}
+                  name="title"
+                  render={({ field, fieldState }) => (
+                    <FormItem className="flex flex-col gap-2">
+                      <FormLabel>Title</FormLabel>
+                      <FormControl>
+                        <Input
+                          id="post-title"
+                          {...field}
+                          hasErrors={!!fieldState.error}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={editPostForm.control}
+                  name="body"
+                  render={({ field, fieldState }) => (
+                    <FormItem className="flex flex-col gap-2">
+                      <FormLabel>Text</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          id="post-content"
+                          {...field}
+                          hasErrors={!!fieldState.error}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <DialogFooter>
+                  <Button type="submit">Save</Button>
+                </DialogFooter>
+              </form>
+            </Form>
+          </DialogContent>
+        </Dialog>
     </div>
     <div className="text-slate-700">{post.body}</div>
   </div>

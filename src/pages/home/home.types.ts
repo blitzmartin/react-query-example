@@ -12,4 +12,12 @@ export type PostResponse = {
     title: string
     body: string
   }
+
+  // check this type, if needs id
+  export type PostEditRequest = {
+    userId: number
+    title: string
+    body: string
+  }
+  
   

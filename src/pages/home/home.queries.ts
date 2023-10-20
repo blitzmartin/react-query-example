@@ -1,7 +1,7 @@
 import { queryClient } from "@/config/react-query"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import axios from "axios"
-import { PostCreateRequest, PostResponse } from "./home.types"
+import { PostCreateRequest, PostEditRequest, PostResponse } from "./home.types"
 
 const getPosts = async (
 ): Promise<PostResponse[]> => {
@@ -26,6 +26,20 @@ const postCreate = async (body: PostCreateRequest ) => {
 export const usePostCreateMutation = () => {
     return useMutation({
         mutationFn: postCreate,
+        onSuccess: () => {
+            queryClient.invalidateQueries(['posts'])
+        },
+    })
+}
+
+const postEdit = async (body: PostEditRequest ) => {
+    const response = await axios.put('https://jsonplaceholder.typicode.com/posts', body)
+    return response.data
+}
+
+export const usePostEditMutation = () => {
+    return useMutation({
+        mutationFn: postEdit,
         onSuccess: () => {
             queryClient.invalidateQueries(['posts'])
         },
