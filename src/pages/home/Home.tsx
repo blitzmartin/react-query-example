@@ -168,7 +168,7 @@ export const Home = () => {
         renderOnError={<div className="py-20 ">Error</div>}
         renderOnLoading={<div className="py-20">Loading...</div>}
         renderOnSuccess={(postData) => (
-          <div className="flex max-w-[800px] flex-col gap-8">
+          <div className="flex w-full flex-col gap-8">
             {postData.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}
@@ -257,8 +257,8 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
   }
 
   return (
-    <div key={post.id} className="flex flex-col justify-between gap-1">
-      <div className="flex justify-between">
+    <div key={post.id} className="flex w-full flex-col justify-between gap-1">
+      <div className="flex w-full justify-between">
         <div className="font-display text-xl">{post.title}</div>
         <div className="flex items-center justify-between">
           <Dialog

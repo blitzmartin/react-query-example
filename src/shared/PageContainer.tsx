@@ -20,13 +20,13 @@ export const PageContainer = ({
         className
       )}
     >
-      <div className="flex flex-col gap-12">
+      <div className="flex  w-full flex-col gap-12">
         <div className="flex w-full items-start justify-between p-0">
           <h1 className="font-display text-4xl font-bold">{title}</h1>
           <div>{action}</div>
         </div>
         <Separator className="h-0.5" />
-        <div>{children}</div>
+        <div className="w-full">{children}</div>
       </div>
     </div>
   )
