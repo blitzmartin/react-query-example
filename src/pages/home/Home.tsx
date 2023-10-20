@@ -1,3 +1,4 @@
+import { PhPencilSimpleLine, PhPlus } from '@/assets/icons'
 import { toast } from '@/hooks/useToast'
 import { randomId } from '@/lib/utils'
 import {
@@ -24,9 +25,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { usePost, usePostCreateMutation, usePostEditMutation } from './home.queries'
+import {
+  usePost,
+  usePostCreateMutation,
+  usePostEditMutation
+} from './home.queries'
 import { PostResponse } from './home.types'
-import { PhPencilSimpleLine, PhPlus } from '@/assets/icons'
 
 const createPostValidationSchema = z.object({
   title: z.string({ required_error: 'Post title is required' }).min(2, {
@@ -86,7 +90,12 @@ export const Home = () => {
           onClose={() => createPostForm.reset()}
         >
           <DialogTrigger asChild>
-            <Button onClick={() => setIsCreateOpen(true)} className='flex justify-between items-center gap-2'>New Post <PhPlus width="16px" height="16px"/></Button>
+            <Button
+              onClick={() => setIsCreateOpen(true)}
+              className="flex items-center justify-between gap-2"
+            >
+              New Post <PhPlus width="16px" height="16px" />
+            </Button>
           </DialogTrigger>
           <DialogContent>
             <Form {...createPostForm}>
@@ -151,7 +160,9 @@ export const Home = () => {
         renderOnLoading={<div className="py-20 text-cyan-50">Loading...</div>}
         renderOnSuccess={(postData) => (
           <div className="flex max-w-[800px] flex-col gap-8">
-            {postData.map((post) => (<PostCard key={post.id} post={post}  />))}
+            {postData.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
           </div>
         )}
       />
@@ -170,14 +181,14 @@ const editPostValidationSchema = z.object({
 
 type EditPostFormValues = z.infer<typeof editPostValidationSchema>
 
-export const PostCard = ({post}:{post: PostResponse}) =>{
-  const [isEditOpen, setIsEditOpen]= useState(false)
+export const PostCard = ({ post }: { post: PostResponse }) => {
+  const [isEditOpen, setIsEditOpen] = useState(false)
   const handleClose = () => {
     setIsEditOpen(false)
     editPostForm.reset()
   }
   const editPostForm = useForm<EditPostFormValues>({
-    defaultValues:{
+    defaultValues: {
       title: post.title,
       body: post.body
     },
@@ -208,22 +219,24 @@ export const PostCard = ({post}:{post: PostResponse}) =>{
       }
     )
   }
-  return(
+  return (
     <div
-    key={post.id}
-    className="flex flex-col justify-between gap-4 rounded-lg border-2 border-foreground bg-cyan-50 px-6 py-4 font-body"
-  >
-    <div className="flex justify-between">
-      <div className="font-sans font-semibold">
-        {post.title.toUpperCase()}
-      </div>
-      <Dialog
+      key={post.id}
+      className="flex flex-col justify-between gap-4 rounded-lg border-2 border-foreground bg-cyan-50 px-6 py-4 font-body"
+    >
+      <div className="flex justify-between">
+        <div className="font-sans font-semibold">
+          {post.title.toUpperCase()}
+        </div>
+        <Dialog
           open={isEditOpen}
           onOpenChange={setIsEditOpen}
           onClose={() => editPostForm.reset()}
         >
           <DialogTrigger asChild>
-            <Button variant="ghost" onClick={() => setIsEditOpen(true)}><PhPencilSimpleLine width="16px" height="16px"/></Button>
+            <Button variant="ghost" onClick={() => setIsEditOpen(true)}>
+              <PhPencilSimpleLine width="16px" height="16px" />
+            </Button>
           </DialogTrigger>
           <DialogContent>
             <Form {...editPostForm}>
@@ -278,8 +291,8 @@ export const PostCard = ({post}:{post: PostResponse}) =>{
             </Form>
           </DialogContent>
         </Dialog>
+      </div>
+      <div className="text-slate-700">{post.body}</div>
     </div>
-    <div className="text-slate-700">{post.body}</div>
-  </div>
   )
 }
