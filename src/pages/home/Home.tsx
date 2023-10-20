@@ -26,6 +26,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { usePost, usePostCreateMutation, usePostEditMutation } from './home.queries'
 import { PostResponse } from './home.types'
+import { PhPencilSimpleLine } from '@/assets/icons'
 
 const createPostValidationSchema = z.object({
   title: z.string({ required_error: 'Post title is required' }).min(2, {
@@ -170,6 +171,11 @@ const editPostValidationSchema = z.object({
 type EditPostFormValues = z.infer<typeof editPostValidationSchema>
 
 export const PostCard = ({post}:{post: PostResponse}) =>{
+  const [isEditOpen, setIsEditOpen]= useState(false)
+  const handleClose = () => {
+    setIsEditOpen(false)
+    editPostForm.reset()
+  }
   const editPostForm = useForm<EditPostFormValues>({
     defaultValues:{
       title: post.title,
@@ -212,12 +218,12 @@ export const PostCard = ({post}:{post: PostResponse}) =>{
         {post.title.toUpperCase()}
       </div>
       <Dialog
-          open={isCreateOpen}
-          onOpenChange={setIsCreateOpen}
+          open={isEditOpen}
+          onOpenChange={setIsEditOpen}
           onClose={() => editPostForm.reset()}
         >
           <DialogTrigger asChild>
-            <Button onClick={() => setIsCreateOpen(true)}>New Post</Button>
+            <Button variant="ghost" onClick={() => setIsEditOpen(true)}><PhPencilSimpleLine/></Button>
           </DialogTrigger>
           <DialogContent>
             <Form {...editPostForm}>
