@@ -26,7 +26,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { usePost, usePostCreateMutation, usePostEditMutation } from './home.queries'
 import { PostResponse } from './home.types'
-import { PhPencilSimpleLine } from '@/assets/icons'
+import { PhPencilSimpleLine, PhPlus } from '@/assets/icons'
 
 const createPostValidationSchema = z.object({
   title: z.string({ required_error: 'Post title is required' }).min(2, {
@@ -86,7 +86,7 @@ export const Home = () => {
           onClose={() => createPostForm.reset()}
         >
           <DialogTrigger asChild>
-            <Button onClick={() => setIsCreateOpen(true)}>New Post</Button>
+            <Button onClick={() => setIsCreateOpen(true)} className='flex justify-between items-center gap-2'>New Post <PhPlus width="16px" height="16px"/></Button>
           </DialogTrigger>
           <DialogContent>
             <Form {...createPostForm}>
@@ -223,7 +223,7 @@ export const PostCard = ({post}:{post: PostResponse}) =>{
           onClose={() => editPostForm.reset()}
         >
           <DialogTrigger asChild>
-            <Button variant="ghost" onClick={() => setIsEditOpen(true)}><PhPencilSimpleLine/></Button>
+            <Button variant="ghost" onClick={() => setIsEditOpen(true)}><PhPencilSimpleLine width="16px" height="16px"/></Button>
           </DialogTrigger>
           <DialogContent>
             <Form {...editPostForm}>
