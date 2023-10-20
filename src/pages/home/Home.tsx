@@ -151,13 +151,13 @@ export const Home = () => {
           </DialogContent>
         </Dialog>
       </div>
-      <h1 className="pb-10 text-center font-serif text-3xl font-extrabold text-cyan-50">
+      <h1 className="pb-10 text-center font-display text-4xl font-bold ">
         Posts
       </h1>
       <QueryStateManager
         query={postQuery}
-        renderOnError={<div className="py-20 text-cyan-50">Error</div>}
-        renderOnLoading={<div className="py-20 text-cyan-50">Loading...</div>}
+        renderOnError={<div className="py-20 ">Error</div>}
+        renderOnLoading={<div className="py-20">Loading...</div>}
         renderOnSuccess={(postData) => (
           <div className="flex max-w-[800px] flex-col gap-8">
             {postData.map((post) => (
@@ -222,12 +222,10 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
   return (
     <div
       key={post.id}
-      className="flex flex-col justify-between gap-4 rounded-lg border-2 border-foreground bg-cyan-50 px-6 py-4 font-body"
+      className="flex flex-col justify-between gap-4 rounded-lg border-2 border-foreground px-6 py-4"
     >
       <div className="flex justify-between">
-        <div className="font-sans font-semibold">
-          {post.title.toUpperCase()}
-        </div>
+        <div className="">{post.title.toUpperCase()}</div>
         <Dialog
           open={isEditOpen}
           onOpenChange={setIsEditOpen}

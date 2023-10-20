@@ -11,11 +11,11 @@ export const PageContainer = ({
   return (
     <div
       className={cn(
-        'flex gap-4 h-full w-full flex-col px-20 py-8 bg-sky-950 items-center min-h-screen',
+        'bg-background flex gap-4 h-full w-full flex-col px-20 py-8 items-center min-h-screen',
         className
       )}
     >
-      <div className="flex-initial"> {children}</div>
+      <div className="flex-initial">{children}</div>
     </div>
   )
 }
