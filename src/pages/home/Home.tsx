@@ -19,7 +19,6 @@ import {
   Input,
   PageContainer,
   QueryStateManager,
-  Separator,
   Textarea
 } from '@/shared'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -83,9 +82,9 @@ export const Home = () => {
   }
 
   return (
-    <PageContainer>
-      <div className="flex w-full items-start justify-between p-0">
-        <h1 className="font-display text-4xl font-bold">POSTS</h1>
+    <PageContainer
+      title="POSTS"
+      action={
         <Dialog
           open={isCreateOpen}
           onOpenChange={setIsCreateOpen}
@@ -152,8 +151,8 @@ export const Home = () => {
             </Form>
           </DialogContent>
         </Dialog>
-      </div>
-      <Separator className="h-0.5" />
+      }
+    >
       <QueryStateManager
         query={postQuery}
         renderOnError={<div className="py-20 ">Error</div>}
