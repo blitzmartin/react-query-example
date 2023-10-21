@@ -28,7 +28,10 @@ import {
   Input,
   PageContainer,
   QueryStateManager,
-  Textarea
+  Textarea,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger
 } from '@/shared'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
@@ -101,12 +104,19 @@ export const Home = () => {
           onClose={() => createPostForm.reset()}
         >
           <DialogTrigger asChild>
-            <Button
-              onClick={() => setIsCreateOpen(true)}
-              className="flex items-center justify-between gap-2"
-            >
-              New Post <PhPlus width="16px" height="16px" />
-            </Button>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  onClick={() => setIsCreateOpen(true)}
+                  className="flex items-center justify-between gap-2"
+                >
+                  New Post <PhPlus width="16px" height="16px" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>New post</p>
+              </TooltipContent>
+            </Tooltip>
           </DialogTrigger>
           <DialogContent>
             <Form {...createPostForm}>
@@ -115,10 +125,8 @@ export const Home = () => {
                 className="flex flex-col gap-4"
               >
                 <DialogHeader>
-                  <DialogTitle>Create new post</DialogTitle>
-                  <DialogDescription>
-                    A small description, probably unnecesary
-                  </DialogDescription>
+                  <DialogTitle>New post</DialogTitle>
+                  <DialogDescription>Create new post</DialogDescription>
                 </DialogHeader>
                 <FormField
                   control={createPostForm.control}
@@ -267,9 +275,16 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
             onClose={() => editPostForm.reset()}
           >
             <DialogTrigger asChild>
-              <Button variant="ghost" onClick={() => setIsEditOpen(true)}>
-                <PhPencilSimpleLine width="16px" height="16px" />
-              </Button>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button variant="ghost" onClick={() => setIsEditOpen(true)}>
+                    <PhPencilSimpleLine width="16px" height="16px" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Edit post</p>
+                </TooltipContent>
+              </Tooltip>
             </DialogTrigger>
             <DialogContent>
               <Form {...editPostForm}>
@@ -326,9 +341,16 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
           </Dialog>
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="ghost">
-                <PhTrash width="16px" height="16px" />
-              </Button>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button variant="ghost">
+                    <PhTrash width="16px" height="16px" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Delete post</p>
+                </TooltipContent>
+              </Tooltip>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>

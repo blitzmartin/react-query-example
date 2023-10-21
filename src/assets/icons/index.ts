@@ -1,4 +1,5 @@
 export * from './PhPencilSimpleLine'
 export * from './PhPlus'
+export * from './PhSignOutFill'
 export * from './PhTrash'
 export * from './PhXBold'
