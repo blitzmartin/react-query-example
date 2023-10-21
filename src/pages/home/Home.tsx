@@ -340,18 +340,18 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
             </DialogContent>
           </Dialog>
           <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Tooltip>
-                <TooltipTrigger>
+            <Tooltip>
+              <TooltipTrigger>
+                <AlertDialogTrigger asChild>
                   <Button variant="ghost">
                     <PhTrash width="16px" height="16px" />
                   </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Delete post</p>
-                </TooltipContent>
-              </Tooltip>
-            </AlertDialogTrigger>
+                </AlertDialogTrigger>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Delete post</p>
+              </TooltipContent>
+            </Tooltip>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Delete post</AlertDialogTitle>
