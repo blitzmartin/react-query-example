@@ -1,3 +1,5 @@
+import { PhSignOutFill } from '@/assets/icons'
+import { toast } from '@/hooks/useToast'
 import {
   Avatar,
   AvatarFallback,
@@ -5,7 +7,11 @@ import {
   Button,
   QueryStateManager,
   Separator,
-  Toaster
+  Toaster,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
 } from '@/shared'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Outlet } from 'react-router'
@@ -15,11 +21,13 @@ import { queryClient } from './react-query'
 export const AppLayout = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex justify-start gap-0">
-        <Sidebar />
-        <Outlet />
-      </div>
-      <Toaster />
+      <TooltipProvider>
+        <div className="flex justify-start gap-0">
+          <Sidebar />
+          <Outlet />
+        </div>
+        <Toaster />
+      </TooltipProvider>
     </QueryClientProvider>
   )
 }
@@ -62,7 +70,25 @@ const Sidebar = () => {
             </div>
           </div>
           <div className="flex w-full items-center justify-start">
-            <Button variant="outline">Logout</Button>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  variant="ghost"
+                  className="p-0"
+                  onClick={() =>
+                    toast({
+                      description: 'User logged out',
+                      variant: 'success'
+                    })
+                  }
+                >
+                  <PhSignOutFill width="24px" height="24px" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Logout</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
       )}

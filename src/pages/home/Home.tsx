@@ -1,6 +1,6 @@
 import { PhPencilSimpleLine, PhPlus, PhTrash } from '@/assets/icons'
 import { toast } from '@/hooks/useToast'
-import { randomId } from '@/lib/utils'
+import { capitalizeFirstLetter, randomId } from '@/lib/utils'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,8 +28,12 @@ import {
   Input,
   PageContainer,
   QueryStateManager,
-  Textarea
+  Textarea,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger
 } from '@/shared'
+import { DataFetchError } from '@/shared/DataFetchError'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -101,12 +105,19 @@ export const Home = () => {
           onClose={() => createPostForm.reset()}
         >
           <DialogTrigger asChild>
-            <Button
-              onClick={() => setIsCreateOpen(true)}
-              className="flex items-center justify-between gap-2"
-            >
-              New Post <PhPlus width="16px" height="16px" />
-            </Button>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  onClick={() => setIsCreateOpen(true)}
+                  className="flex items-center justify-between gap-2"
+                >
+                  New Post <PhPlus width="16px" height="16px" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>New post</p>
+              </TooltipContent>
+            </Tooltip>
           </DialogTrigger>
           <DialogContent>
             <Form {...createPostForm}>
@@ -115,10 +126,8 @@ export const Home = () => {
                 className="flex flex-col gap-4"
               >
                 <DialogHeader>
-                  <DialogTitle>Create new post</DialogTitle>
-                  <DialogDescription>
-                    A small description, probably unnecesary
-                  </DialogDescription>
+                  <DialogTitle>New post</DialogTitle>
+                  <DialogDescription>Create new post</DialogDescription>
                 </DialogHeader>
                 <FormField
                   control={createPostForm.control}
@@ -165,10 +174,10 @@ export const Home = () => {
     >
       <QueryStateManager
         query={postQuery}
-        renderOnError={<div className="py-20 ">Error</div>}
+        renderOnError={<DataFetchError />}
         renderOnLoading={<div className="py-20">Loading...</div>}
         renderOnSuccess={(postData) => (
-          <div className="flex w-full flex-col gap-8">
+          <div className="flex w-full flex-col gap-8 overflow-auto">
             {postData.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}
@@ -192,8 +201,12 @@ type EditPostFormValues = z.infer<typeof editPostValidationSchema>
 
 export const PostCard = ({ post }: { post: PostResponse }) => {
   const [isEditOpen, setIsEditOpen] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false)
   const postEditMutation = usePostEditMutation()
   const postDeleteMutation = usePostDeleteMutation()
+  const truncatedText = isExpanded
+    ? post.body
+    : post.body.slice(0, 80).concat('...')
 
   const handleClose = () => {
     setIsEditOpen(false)
@@ -259,7 +272,9 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
   return (
     <div key={post.id} className="flex w-full flex-col justify-between gap-1">
       <div className="flex w-full justify-between">
-        <div className="font-display text-xl">{post.title}</div>
+        <div className="font-display text-xl">
+          {capitalizeFirstLetter(post.title)}
+        </div>
         <div className="flex items-center justify-between">
           <Dialog
             open={isEditOpen}
@@ -267,9 +282,16 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
             onClose={() => editPostForm.reset()}
           >
             <DialogTrigger asChild>
-              <Button variant="ghost" onClick={() => setIsEditOpen(true)}>
-                <PhPencilSimpleLine width="16px" height="16px" />
-              </Button>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button variant="ghost" onClick={() => setIsEditOpen(true)}>
+                    <PhPencilSimpleLine width="16px" height="16px" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Edit post</p>
+                </TooltipContent>
+              </Tooltip>
             </DialogTrigger>
             <DialogContent>
               <Form {...editPostForm}>
@@ -325,11 +347,18 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
             </DialogContent>
           </Dialog>
           <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="ghost">
-                <PhTrash width="16px" height="16px" />
-              </Button>
-            </AlertDialogTrigger>
+            <Tooltip>
+              <TooltipTrigger>
+                <AlertDialogTrigger asChild>
+                  <Button variant="ghost">
+                    <PhTrash width="16px" height="16px" />
+                  </Button>
+                </AlertDialogTrigger>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Delete post</p>
+              </TooltipContent>
+            </Tooltip>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Delete post</AlertDialogTitle>
@@ -348,7 +377,17 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
           </AlertDialog>
         </div>
       </div>
-      <div className="text-sm text-card">{post.body}</div>
+      <div className="text-sm text-card">
+        {truncatedText}
+        {post.body.length > 80 && (
+          <button
+            className="cursor-pointer pl-2 text-muted hover:text-primary hover:underline"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? 'Read Less' : 'Read More'}
+          </button>
+        )}
+      </div>
     </div>
   )
 }

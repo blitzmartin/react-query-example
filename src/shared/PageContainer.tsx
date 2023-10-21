@@ -16,7 +16,7 @@ export const PageContainer = ({
   return (
     <div
       className={cn(
-        'bg-background flex h-screen overflow-auto w-full min-h-screen py-6 px-8',
+        'bg-background flex h-screen hide-scrollbar overflow-auto w-full min-h-screen py-6 px-8',
         className
       )}
     >
