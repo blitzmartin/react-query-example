@@ -33,6 +33,7 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '@/shared'
+import { DataFetchError } from '@/shared/DataFetchError'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -173,7 +174,7 @@ export const Home = () => {
     >
       <QueryStateManager
         query={postQuery}
-        renderOnError={<div className="py-20 ">Error</div>}
+        renderOnError={<DataFetchError />}
         renderOnLoading={<div className="py-20">Loading...</div>}
         renderOnSuccess={(postData) => (
           <div className="flex w-full flex-col gap-8">
