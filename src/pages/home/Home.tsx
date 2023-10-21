@@ -1,6 +1,6 @@
 import { PhPencilSimpleLine, PhPlus, PhTrash } from '@/assets/icons'
 import { toast } from '@/hooks/useToast'
-import { randomId } from '@/lib/utils'
+import { capitalizeFirstLetter, randomId } from '@/lib/utils'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -272,7 +272,9 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
   return (
     <div key={post.id} className="flex w-full flex-col justify-between gap-1">
       <div className="flex w-full justify-between">
-        <div className="font-display text-xl">{post.title}</div>
+        <div className="font-display text-xl">
+          {capitalizeFirstLetter(post.title)}
+        </div>
         <div className="flex items-center justify-between">
           <Dialog
             open={isEditOpen}
@@ -379,7 +381,7 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
         {truncatedText}
         {post.body.length > 80 && (
           <button
-            className="ml-2 cursor-pointer text-muted hover:text-primary hover:underline"
+            className="cursor-pointer pl-2 text-muted hover:text-primary hover:underline"
             onClick={() => setIsExpanded(!isExpanded)}
           >
             {isExpanded ? 'Read Less' : 'Read More'}
