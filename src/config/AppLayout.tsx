@@ -1,4 +1,5 @@
 import { PhSignOutFill } from '@/assets/icons'
+import { toast } from '@/hooks/useToast'
 import {
   Avatar,
   AvatarFallback,
@@ -71,7 +72,16 @@ const Sidebar = () => {
           <div className="flex w-full items-center justify-start">
             <Tooltip>
               <TooltipTrigger>
-                <Button variant="ghost" className="p-0">
+                <Button
+                  variant="ghost"
+                  className="p-0"
+                  onClick={() =>
+                    toast({
+                      description: 'User logged out',
+                      variant: 'success'
+                    })
+                  }
+                >
                   <PhSignOutFill width="24px" height="24px" />
                 </Button>
               </TooltipTrigger>
