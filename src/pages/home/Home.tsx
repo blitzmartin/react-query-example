@@ -201,8 +201,12 @@ type EditPostFormValues = z.infer<typeof editPostValidationSchema>
 
 export const PostCard = ({ post }: { post: PostResponse }) => {
   const [isEditOpen, setIsEditOpen] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false)
   const postEditMutation = usePostEditMutation()
   const postDeleteMutation = usePostDeleteMutation()
+  const truncatedText = isExpanded
+    ? post.body
+    : post.body.slice(0, 80).concat('...')
 
   const handleClose = () => {
     setIsEditOpen(false)
@@ -371,7 +375,17 @@ export const PostCard = ({ post }: { post: PostResponse }) => {
           </AlertDialog>
         </div>
       </div>
-      <div className="text-sm text-card">{post.body}</div>
+      <div className="text-sm text-card">
+        {truncatedText}
+        {post.body.length > 80 && (
+          <button
+            className="ml-2 cursor-pointer text-muted hover:text-primary hover:underline"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? 'Read Less' : 'Read More'}
+          </button>
+        )}
+      </div>
     </div>
   )
 }
