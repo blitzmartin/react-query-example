@@ -1,9 +1,9 @@
+import { PhXBold } from '@/assets/icons'
+import { cn } from '@/lib/utils'
 import * as ToastPrimitives from '@radix-ui/react-toast'
 import { cva, type VariantProps } from 'class-variance-authority'
 import * as React from 'react'
 import { useToast } from '../hooks/useToast'
-import { PhXBold } from '@/assets/icons'
-import { cn } from '@/lib/utils'
 
 const ToastProvider = ToastPrimitives.Provider
 
@@ -27,14 +27,14 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
-        default: 'border-sky-500 bg-sky-300 text-slate-900',
-        error: 'border-red-500 bg-red-300 text-slate-900',
-        success: 'border-green-500 bg-green-300 text-slate-900',
-      },
+        default: 'border-0 bg-sky-300 text-slate-900',
+        error: 'border-0 bg-red-300 text-slate-900',
+        success: 'border-0 bg-green-300 text-slate-900'
+      }
     },
     defaultVariants: {
-      variant: 'default',
-    },
+      variant: 'default'
+    }
   }
 )
 
@@ -123,7 +123,7 @@ export {
   ToastTitle,
   ToastViewport,
   type ToastActionElement,
-  type ToastProps,
+  type ToastProps
 }
 
 export function Toaster() {
