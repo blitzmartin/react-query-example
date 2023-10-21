@@ -177,7 +177,7 @@ export const Home = () => {
         renderOnError={<DataFetchError />}
         renderOnLoading={<div className="py-20">Loading...</div>}
         renderOnSuccess={(postData) => (
-          <div className="flex w-full flex-col gap-8">
+          <div className="flex w-full flex-col gap-8 overflow-auto">
             {postData.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}
